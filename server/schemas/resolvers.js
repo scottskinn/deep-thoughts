@@ -20,7 +20,7 @@ const resolvers = {
         },
         me: async (parent, args, context) => {
             if (context.user) {
-            const userData = await User.findOne({})
+            const userData = await User.findOne({_id: context.user._id})
             .select('-__v -password')
             .populate('friends')
             .populate('thoughts');
@@ -42,7 +42,7 @@ const resolvers = {
             const user = await User.create(args);
             const token = signToken(user);
 
-            return {user, token };
+            return { user, token };
         },
         login: async (parent, { email, password }) => {
             const user = await User.findOne({ email });
